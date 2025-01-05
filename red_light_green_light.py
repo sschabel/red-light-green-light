@@ -1,4 +1,4 @@
-from time import sleep
+from time import sleep, sleep_ms
 import random
 from math import floor
 
@@ -36,17 +36,17 @@ class RedLightGreenLight:
 
     def activate_buzzer(self, next_light):
         if next_light == self.green_light:
-            self.buzzer.on(t=0.20)
-            sleep(0.10)
-            self.buzzer.on(t=0.20)
-            sleep(0.10)
-            self.buzzer.on(t=0.20)
+            self.buzzer.on(t=0.15)
+            sleep_ms(250)
+            self.buzzer.on(t=0.15)
+            sleep_ms(250)
+            self.buzzer.on(t=0.15)
         elif next_light == self.yellow_light:
-            self.buzzer.on(t=0.4)
-            sleep(0.10)
-            self.buzzer.on(t=0.4)
+            self.buzzer.on(t=0.15)
+            sleep_ms(250)
+            self.buzzer.on(t=0.15)
         else:
-            self.buzzer.on(t=2.5)
+            self.buzzer.on(t=1.5)
         
     def update_lcd(self, color):
         lcd = self.lcd
