@@ -31,7 +31,7 @@ class RedLightGreenLightTest(unittest.TestCase):
     # given
     randint_mock.return_value = 1
     # when
-    result = self.cut.determine_next_light()
+    result = self.cut.determine_next_light(2)
     # then
     self.assertEqual(result, self.greenLight)
 
@@ -40,7 +40,7 @@ class RedLightGreenLightTest(unittest.TestCase):
     # given
     randint_mock.return_value = 2
     # when
-    result = self.cut.determine_next_light()
+    result = self.cut.determine_next_light(2)
     # then
     self.assertEqual(result, self.yellowLight)
 
@@ -49,6 +49,6 @@ class RedLightGreenLightTest(unittest.TestCase):
     # given
     randint_mock.return_value = 3
     # when
-    result = self.cut.determine_next_light()
+    result = self.cut.determine_next_light(2)
     # then
     self.assertEqual(result, self.redLight)
