@@ -6,9 +6,9 @@ from red_light_green_light import RedLightGreenLight
 
 class RedLightGreenLightTest(unittest.TestCase):
 
-  redLight = Mock()
-  yellowLight = Mock()
-  greenLight = Mock()
+  red_light = Mock()
+  yellow_light = Mock()
+  green_light = Mock()
   lcd = Mock()
   led_mock = PropertyMock()
   led_on_mock = Mock()
@@ -16,7 +16,7 @@ class RedLightGreenLightTest(unittest.TestCase):
   cut = None # RedLightGreenLight is our CUT (Class Under Test)
 
   def setUp(self):
-    self.cut = RedLightGreenLight(self.redLight, self.yellowLight, self.greenLight, self.lcd)
+    self.cut = RedLightGreenLight(self.red_light, self.yellow_light, self.green_light, self.lcd)
 
   def test_givenLightsAndLcd_whenInitRedLightGreenLight_thenPlayingIsFalse(self):
     # given
@@ -31,24 +31,24 @@ class RedLightGreenLightTest(unittest.TestCase):
     # given
     randint_mock.return_value = 1
     # when
-    result = self.cut.determine_next_light(2)
+    result = self.cut.determine_next_light()
     # then
-    self.assertEqual(result, self.greenLight)
+    self.assertEqual(result, self.green_light)
 
   @unittest.mock.patch('random.randint')
   def test_givenRandIntIs1_whenDetermineNextLight_thenReturnYellowLight(self, randint_mock):
     # given
     randint_mock.return_value = 2
     # when
-    result = self.cut.determine_next_light(2)
+    result = self.cut.determine_next_light()
     # then
-    self.assertEqual(result, self.yellowLight)
+    self.assertEqual(result, self.yellow_light)
 
   @unittest.mock.patch('random.randint')
   def test_givenRandIntIs1_whenDetermineNextLight_thenReturnRedLight(self, randint_mock):
     # given
     randint_mock.return_value = 3
     # when
-    result = self.cut.determine_next_light(2)
+    result = self.cut.determine_next_light()
     # then
-    self.assertEqual(result, self.redLight)
+    self.assertEqual(result, self.red_light)

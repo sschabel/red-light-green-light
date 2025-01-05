@@ -27,18 +27,18 @@ BUZZER_GPIO = 28
 lcd = I2cLcd(i2c, I2C_ADDRESS, I2C_NUM_ROWS, I2C_NUM_COLS)
 
 button = machine.Pin(18, Pin.IN, Pin.PULL_UP) # button to turn game on & off
-greenLed = LED(GREEN_LED_GPIO)
-yellowLed = LED(YELLOW_LED_GPIO)
-redLed = LED(RED_LED_GPIO)
+green_led = LED(GREEN_LED_GPIO)
+yellow_led = LED(YELLOW_LED_GPIO)
+red_led = LED(RED_LED_GPIO)
 buzzer = Buzzer(BUZZER_GPIO)
 
-greenLight = Light("Green", greenLed)
-yellowLight = Light("Yellow", yellowLed)
-redLight = Light("Red", redLed)
+green_light = Light("Green", green_led)
+yellow_light = Light("Yellow", yellow_led)
+red_light = Light("Red", red_led)
 
 lcd.backlight_off()
 
-game = RedLightGreenLight(redLight, yellowLight, greenLight, lcd, buzzer)
+game = RedLightGreenLight(red_light, yellow_light, green_light, lcd, buzzer)
 
 def handle_interrupt(pin):
     game.end_game()

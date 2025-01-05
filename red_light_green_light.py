@@ -4,41 +4,58 @@ from math import floor
 
 class RedLightGreenLight:
     
-    def __init__(self, redLight, yellowLight, greenLight, lcd, buzzer):
-        self.redLight = redLight
-        self.yellowLight = yellowLight
-        self.greenLight = greenLight
+    def __init__(self, red_light, yellow_light, green_light, lcd, buzzer):
+        self.red_light = red_light
+        self.yellow_light = yellow_light
+        self.green_light = green_light
         self.lcd = lcd
         self.buzzer = buzzer
         self.playing = False
     
-    def determine_next_light(self, duration):
-        light = random.randint(1, 3)
-        if light == 1:
-            self.buzzTime = 1
-            return self.greenLight
-        elif light == 2:
-            self.buzzTime = 0.5
-            return self.yellowLight
+    def determine_next_light(self, last_light):
+        if last_light == self.red_light:
+            light = random.choice([1, 2])
+        elif last_light == self.yellow_light:
+            light = random.choice([1, 3])
         else:
-            self.buzzTime = 2.5
-            return self.redLight
+            light = random.choice([2, 3])
+
+        if light == 1:
+            return self.green_light
+        elif light == 2:
+            return self.yellow_light
+        else:
+            return self.red_light
         
-    def change_light(self, lastLight, nextLight):
-        if lastLight != None:
-            lastLight.led.off()
-        self.update_lcd(nextLight.color)
-        nextLight.led.on()
-        self.buzzer.on(t=self.buzzTime)
+    def change_light(self, last_light, next_light):
+        if last_light is not None:
+            last_light.led.off()
+        self.update_lcd(next_light.color)
+        next_light.led.on()
+        self.activate_buzzer(next_light)
+
+    def activate_buzzer(self, next_light):
+        if next_light == self.green_light:
+            self.buzzer.on(t=0.20)
+            sleep(0.10)
+            self.buzzer.on(t=0.20)
+            sleep(0.10)
+            self.buzzer.on(t=0.20)
+        elif next_light == self.yellow_light:
+            self.buzzer.on(t=0.4)
+            sleep(0.10)
+            self.buzzer.on(t=0.4)
+        else:
+            self.buzzer.on(t=2.5)
         
     def update_lcd(self, color):
         lcd = self.lcd
         lcd.clear()
         lcd.backlight_on()
         length = len(color)
-        remainingChars = 16 - length
-        startPosition = floor(remainingChars / 2)
-        lcd.move_to(startPosition, 0)
+        remaining_chars = 16 - length
+        start_position = floor(remaining_chars / 2)
+        lcd.move_to(start_position, 0)
         lcd.putstr(color)
         lcd.move_to(5,1)
         lcd.putstr("Light!")
@@ -71,21 +88,22 @@ class RedLightGreenLight:
     
     def start_game(self):
         self.playing = True
-        lastLight = self.redLight
+        last_light = self.red_light
         self.update_lcd_for_start()
         
         while self.playing:
             duration = random.randint(3, 8)
-            nextLight = self.determine_next_light(duration)
-            self.change_light(lastLight, nextLight)
+            next_light = self.determine_next_light(last_light)
+            self.change_light(last_light, next_light)
             sleep(duration)
-            lastLight = nextLight
+            last_light = next_light
     
     def end_game(self):
         self.playing = False
-        self.greenLight.led.off()
-        self.yellowLight.led.off()
-        self.redLight.led.off()
+        self.green_light.led.off()
+        self.yellow_light.led.off()
+        self.red_light.led.off()
+        self.buzzer.off()
         lcd = self.lcd
         lcd.clear()
         lcd.backlight_on()
